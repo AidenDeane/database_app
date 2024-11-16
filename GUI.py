@@ -1,14 +1,5 @@
 from tkinter import *
 from buttonCommands import *
-#import webbrowser
-
-
-'''def githublink(): # 
-    url = 'https://github.com/AidenDeane'
-    webbrowser.open(url,new=3)
-
-def end():
-    quit()'''
 
 #Main window
 mainWindow = Tk()
@@ -40,4 +31,4 @@ inventoryButton.place(x=10,y=40)
 #must be last
 mainWindow.mainloop()
 
-#test THIS DOESNT WORK
+
