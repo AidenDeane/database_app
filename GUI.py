@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter import ttk
 from buttonCommands import *
 
 #Main window
@@ -11,24 +12,27 @@ titleText = Label(mainWindow)
 titleText.config(text='Welcome to The Database Software',font=('Helvetica',20))
 titleText.pack()
 
-#menu Bar
+#menu bar
+'''initialization'''
 menubar = Menu(mainWindow)
-
 mainWindow.config(menu=menubar)
 
-fileMenu = Menu(menubar)
-menubar.add_cascade(label='Options',menu=fileMenu)
-fileMenu.add_command(label='GitHub',command=github_link)
-fileMenu.add_separator()
-fileMenu.add_command(label='Quit',command=end)
+menu1 = Menu(menubar)
+menubar.add_cascade(label='Options',menu=menu1)
+menu1.add_command(label='GitHub',command=github_link)
+menu1.add_separator()
+menu1.add_command(label='Quit',command=end)
 
-#inventory button
+# window menus
+menu2 = Menu(menubar)
+menubar.add_cascade(label='Menus',menu=menu2)
+
+''''Inventory'''
+menu2.add_command(label='Inventory',command=inventory_button)
 
 inventoryButton = Button(mainWindow)
-inventoryButton.config(text="asd",width=5,height=2)
-inventoryButton.place(x=10,y=40)
+inventoryButton.config(text="Inventory",width=5,height=2)
+inventoryButton.pack()
 
-#must be last
+#must be last else NOTHING works
 mainWindow.mainloop()
-
-
