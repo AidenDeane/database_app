@@ -4,13 +4,13 @@ from buttonCommands import *
 
 #Main window
 mainWindow = Tk()
-mainWindow.geometry('480x480')
+mainWindow.geometry('720x480')
 mainWindow.title('Database Application')
 
 #Title text
 titleText = Label(mainWindow)
 titleText.config(text='Welcome to The Database Software',font=('Helvetica',20))
-titleText.pack()
+titleText.place(x=10,y=20)
 
 #menu bar
 '''initialization'''
@@ -28,7 +28,9 @@ menu2 = Menu(menubar)
 menubar.add_cascade(label='Menus',menu=menu2)
 
 ''''Inventory'''
-menu2.add_command(label='Inventory',command=inventory_button)
+menu2.add_command(label='Inventory')
+
+inventory_window = Toplevel(mainWindow)
 
 inventoryButton = Button(mainWindow)
 inventoryButton.config(text="Inventory",width=5,height=2)
