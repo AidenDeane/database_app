@@ -3,7 +3,7 @@ import PySimpleGUI as sg
 
 passwordLayout = [
     [sg.Text('Please enter your password!')],
-    [sg.Input(key='-pw-'), sg.Button('OK')]
+    [sg.Input(key='-pw-'), sg.Button('OK',key='-pwOK-')] # key -pw- acts as identifier for events
     ]
 passwordPage = sg.Window('Password',passwordLayout)
 
@@ -14,9 +14,10 @@ homepageLayout = [
 homepage = sg.Window('Home', homepageLayout, size=(720,720))
 
 inventoryLayout = [
+    [sg.Button("Back",key='-hpgBack-',enable_events=True)],
     [sg.Text('Testing')]
 ]
-inventoryPage = sg.Window('Inv',inventoryLayout, size=(720,720))
+inventoryPage = sg.Window('Inventory',inventoryLayout, size=(720,720))
 
 
 

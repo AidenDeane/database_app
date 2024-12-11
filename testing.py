@@ -1,15 +1,8 @@
 import PySimpleGUI as sg
+from GUI_service import *
 
-layout = [[sg.Text('Very basic Window')],
-          [sg.Text('Click X in titlebar or the Exit button')],
-          [sg.Button('Go'), sg.Button('Exit')]]
+tablayout = [[sg.TabGroup([[sg.Tab("Tab 1", homepageLayout), sg.Tab("Tab 2", inventoryLayout)]])]]
 
-window = sg.Window('Window Title', layout, enable_close_attempted_event=True)
+mainwindow = sg.Window('Asdasfg',tablayout)
 
-while True:
-    event, values = window.read()
-    print(event, values)
-    if (event == sg.WINDOW_CLOSE_ATTEMPTED_EVENT or event == 'Exit') and sg.popup_yes_no('Do you really want to exit?') == 'Yes':
-        break
-
-window.close()
+mainwindow.read()

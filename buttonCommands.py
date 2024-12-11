@@ -1,4 +1,3 @@
-# Possibly deprecated
+import os
 
-while(True):
-    print("asda")
+os.system('clear')
