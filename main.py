@@ -2,8 +2,7 @@ import PySimpleGUI as sg
 import time
 from GUI_service import *
 
-passwordChallenge = False
-
+passwordChallenge = True # <-- Change to false upon release
 
 ## Password challenge
 '''----------'''
@@ -23,17 +22,5 @@ while passwordChallenge == False:
 ## Homepage
 '''---------'''
 while passwordChallenge == True: #If password is true, start main program
-    event = homepage.read() #Launches the window
-    print(event, values)
-    ## Open inventory window
-    if event == ('-inv-', {}):
-        homepage.hide()
-        event = inventoryPage.read()
-        print(event,values)
-        if event == ('-hpgBack-', {}):
-            homepage.un_hide()
-            inventoryPage.Close = True
-    elif event == sg.WIN_CLOSED or sg.Exit():
-        homepage.close()
-        print("asdfgdds")
-        break
+    mainPage.read() #Launches the window
+    ## Open inventory window 

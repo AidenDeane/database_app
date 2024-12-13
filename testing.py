@@ -1,8 +1,10 @@
 import PySimpleGUI as sg
-from GUI_service import *
 
-tablayout = [[sg.TabGroup([[sg.Tab("Tab 1", homepageLayout), sg.Tab("Tab 2", inventoryLayout)]])]]
+menu_def = [['&Github', ['!&hbk',]]]
 
-mainwindow = sg.Window('Asdasfg',tablayout)
+layout = [[sg.Menu(menu_def)],
+          [sg.Text('Your window!', size=(30, 5))]]
 
-mainwindow.read()
+
+page = sg.Window('test',layout)
+page.read()
