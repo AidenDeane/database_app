@@ -22,5 +22,7 @@ while passwordChallenge == False:
 ## Homepage
 '''---------'''
 while passwordChallenge == True: #If password is true, start main program
-    mainPage.read() #Launches the window
+    values, event = mainPage.read() #Launches the window
+    print(values,event)
     ## Open inventory window 
+    
