@@ -1,4 +1,5 @@
 import PySimpleGUI as sg
+from database_array import *
 
 
 passwordLayout = [
@@ -14,9 +15,9 @@ homepageLayout = [
 
 inventoryLayout = [
     [sg.Push(), sg.Text("DATABASE"), sg.Push()],
-    [sg.Table([[1,2,3,4],[5,6,7,8],[9,10,11,12],[13,14,15,16]],headings=['PRODUCT NAME','RETAIL PRICE','WHOLESALE PRICE','ITEM ID'],expand_x=True)],
+    [sg.Table(values=testdata,headings=['PRODUCT NAME','RETAIL PRICE','WHOLESALE PRICE','ITEM ID'],expand_x=True,expand_y=True,key='--database--')],
     [sg.Push(),sg.Text('PRODUCT ENTRY'),sg.Push()],
-    [sg.Table([[[],[],[],[]]],headings=['PRODUCT NAME','RETAIL PRICE','WHOLESALE PRICE','ITEM ID'],expand_x=True,enable_cell_editing=True,enable_events=True],
+    [sg.Table(values=dataUpd,headings=['PRODUCT NAME','RETAIL PRICE','WHOLESALE PRICE','ITEM ID'],expand_x=True,enable_cell_editing=True,enable_events=True)],
     [sg.Button("Update",enable_events=True,key='-invUpd-')]
 ]
 #inventoryPage = sg.Window('Inventory',inventoryLayout, size=(720,720))
