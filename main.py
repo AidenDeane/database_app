@@ -27,15 +27,10 @@ while passwordChallenge == True: #If password is true, start main program
     values, event = mainPage.read() #Launches the window
     #print(values,event)
     if values == '-invUpd-':
-        print('asdas')
-        print(values,event)
-        print(event['-prodName-'])
-
         blah = Item(event['-prodName-'],event['-prodRP-'],event['-prodWP-'],event['-prodID-'])
         add_item()
         print(testdata)
-        #mainPage.refresh()
-        mainPage['--database--'].Update(testdata)
+        mainPage['--database--'].Update(testdata) # Updates the table with the item list
         
 
 
