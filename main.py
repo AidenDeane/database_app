@@ -30,9 +30,14 @@ while passwordChallenge == True: #If password is true, start main program
         print('asdas')
         print(values,event)
         print(event['-prodName-'])
+
+        blah = Item(event['-prodName-'],event['-prodRP-'],event['-prodWP-'],event['-prodID-'])
+        add_item()
+        print(testdata)
+        #mainPage.refresh()
+        mainPage['--database--'].Update(testdata)
         
-        #blah = Item(event['-prodName-'],event['-prodRP-'],event['-prodWP-'],event['-prodID-'])
-        mainPage.refresh()
+
 
     ## Open inventory window 
     
