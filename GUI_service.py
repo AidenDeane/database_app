@@ -17,8 +17,9 @@ inventoryLayout = [
     [sg.Push(), sg.Text("DATABASE"), sg.Push()],
     [sg.Table(values=testdata,headings=['PRODUCT NAME','RETAIL PRICE','WHOLESALE PRICE','ITEM ID'],expand_x=True,expand_y=True,key='--database--')],
     [sg.Push(),sg.Text('PRODUCT ENTRY'),sg.Push()],
-    [sg.Table(values=dataUpd,headings=['PRODUCT NAME','RETAIL PRICE','WHOLESALE PRICE','ITEM ID'],expand_x=True,enable_cell_editing=True,enable_events=True)],
-    [sg.Button("Update",enable_events=True,key='-invUpd-')]
+    [sg.Text(text="Product Name",size=27),sg.Text(text='Retail Price',size=27),sg.Text(text='Wholesale Price',size=27),sg.Text(text='Product ID',size=27)],
+    [sg.Input(key='-prodName-',size=27),sg.Input(key='-prodRP-',size=27),sg.Input(key='-prodWP-',size=27),sg.Input(key='-prodID-',size=27)],
+    [sg.Button("Update",key='-invUpd-')]
 ]
 #inventoryPage = sg.Window('Inventory',inventoryLayout, size=(720,720))
 

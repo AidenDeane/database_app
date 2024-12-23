@@ -24,14 +24,15 @@ while passwordChallenge == False:
 ## Homepage
 '''---------'''
 while passwordChallenge == True: #If password is true, start main program
-    print(testdata)
     values, event = mainPage.read() #Launches the window
-    print(values,event)
-    '''if values == '-invUpd-':
-        print('adwfsgrefwqfrdbegrfwrf')
-        Item.data.append(f'{dataUpd[0][0]}{dataUpd[0][1]}')
+    #print(values,event)
+    if values == '-invUpd-':
+        print('asdas')
+        print(values,event)
+        print(event['-prodName-'])
+        
+        #blah = Item(event['-prodName-'],event['-prodRP-'],event['-prodWP-'],event['-prodID-'])
         mainPage.refresh()
-        mainPage['--database--'].Update(testdata)
-        print(testdata)'''
+
     ## Open inventory window 
     
