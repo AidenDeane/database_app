@@ -1,7 +1,7 @@
 import PySimpleGUI as sg
 
 dataList = []
-def add_item():
+def update_database():
     dataList.clear()
     for items in range(len(Item.data)): # assigns all items a number
         dataList.append([]) # Create 2d list
@@ -29,7 +29,7 @@ testItem = Item("asd",1,2,3030)
 
 
     
-add_item()
+update_database()
 
 '''for items in range(len(Item.data)):
     if event['-checkoutName-']+'Item' == Item.data[items].name:
