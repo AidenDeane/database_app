@@ -27,12 +27,13 @@ while passwordChallenge == True: #If password is true, start main program
     values, event = mainPage.read() #Launches the window
     #print(values,event)
     if values == '-invUpd-':
-        blah = Item(event['-prodName-'],event['-prodRP-'],event['-prodWP-'],event['-prodID-'])
+        newItem = Item(event['-prodName-'],event['-prodRP-'],event['-inInv-'],event['-prodID-']) # Turns gathered values into item class
         add_item()
-        print(testdata)
-        mainPage['--database--'].Update(testdata) # Updates the table with the item list
-        
-
-
+        mainPage['--database--'].Update(dataList) # Updates the table with the item list
+    elif values == '-posCheck-':
+        for items in range(len(Item.data)):
+            if event['-checkoutName-'] == Item.data[items].name:
+                Item.data[items].in_inventory -=1
+                mainPage['--database--'].Update(dataList)
     ## Open inventory window 
     
