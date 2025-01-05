@@ -1,5 +1,6 @@
 import PySimpleGUI as sg
 from database_array import *
+from pos_service import *
 
 
 passwordLayout = [
@@ -25,8 +26,13 @@ inventoryLayout = [
 
 posLayout = [
     [sg.Push(), sg.Text("POINT OF SALES MODULE"), sg.Push()],
-    [sg.Input(key='-checkoutName-'),sg.Input(key='-checkoutAmnt-'),sg.Button(key='-posCheck-')],
-    [sg.Text(text='',key='-posName-',font=('Arial',20),size=27),sg.Text(text='',key='-posInv-',font=('Arial',20),size=27)]
+    [sg.Text(text='Item Name:',font=10,size=50),sg.Text(text='Amount Bought:',font=10,size=50)],
+    [sg.Input(key='-checkoutName-',size=50),sg.Input(key='-checkoutAmnt-',size=50),sg.Button(button_text='Enter',key='-posCheck-',size=5)],
+    [sg.Text(text='',key='-posName-',font=('Arial',20),size=27),sg.Text(text='',key='-posInv-',font=('Arial',20),size=27)],
+    [sg.Text('CURRENT TRANSACTION',font=20)],
+    [sg.Table(values=transactionList,headings=['PRODUCT NAME','AMOUNT','PRICE'],expand_x=True,key='--posTrans--')],
+    [sg.Text(text='GST/HST:',font=20),sg.Text(text='',key='-hstText-',font=20),sg.Text(text='TOTAL:',font=20),sg.Text(text='',key='-totalTax-',font=20)],
+    [sg.Button(button_text='LOG TRANSACTION',key='-posLog-')]
     ]
 
 menu_def = []
@@ -34,7 +40,7 @@ menu_def = []
 mainLayout = [[sg.Menu(menu_def)],
              [sg.TabGroup([[sg.Tab("Home", homepageLayout), 
                             sg.Tab("Inventory", inventoryLayout),
-                            sg.Tab("POS Module",posLayout)]],size=(720,720))]]
+                            sg.Tab("POS Module",posLayout)]],size=(720,720))]] #<-- fits to window
 
 mainPage = sg.Window("Universal Business Solutions",mainLayout,size=(720,720))
 

@@ -1,5 +1,6 @@
 import PySimpleGUI as sg
 
+
 dataList = []
 def update_database():
     dataList.clear()
