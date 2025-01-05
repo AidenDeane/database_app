@@ -1,8 +1,8 @@
 import PySimpleGUI as sg
-import time
 from GUI_service import *
 from database_array import *
 from pos_service import *
+from employee_service import *
 
 passwordChallenge = True # <-- Change to false upon release
 totalNoHST = 0 #<-- for POS function
@@ -37,7 +37,7 @@ while passwordChallenge == True: #If password is true, start main program
         print(dataList)
     elif values == '-posCheck-':
         for items in range(len(Item.data)):
-            if event['-checkoutName-'] == Item.data[items].name or event['-checkoutName-'] == int(Item.data[items].item_id) :  # If inputted name = name in Item.data
+            if event['-checkoutName-'] == Item.data[items].name or event['-checkoutName-'] == Item.data[items].item_id:  # If inputted name = name in Item.data
                 if int(event['-checkoutAmnt-']) <= Item.data[items].in_inventory and int(event['-checkoutAmnt-']) > 0:
                     Item.data[items].in_inventory -= int(event['-checkoutAmnt-']) # Subtract Item.data from inputted value
                     update_database() # Update dataList 
@@ -61,8 +61,19 @@ while passwordChallenge == True: #If password is true, start main program
             elif event['-checkoutName-'] != Item.data[items].name:
                 mainPage['-posName-'].Update("ERROR: BAD NAME!") # Name not OK
     elif values == '-posLog-':
-        transactionList.append([f"pre-tax:{totalNoHST} | w/tax:{round(totalNoHST*1.13,2)}"])
-        save_transaction()
+        if totalNoHST == 0: # Only check 1 since they go hand-in-hand
+            continue
+        else:
+            transactionList.append([f"pre-tax:{totalNoHST} | w/tax:{round(totalNoHST*1.13,2)}"])
+            save_transaction()
+
+    elif values == '-posClear-':
+        transactionList.clear()
+        totalNoHST = 0
+        mainPage['--posTrans--'].Update(transactionList)
+        mainPage['-hstText-'].Update(totalNoHST)
+        mainPage['-totalTax-'].Update(totalNoHST)
+
     
-    ## Open inventory window 
     
+    ## Open inventory window

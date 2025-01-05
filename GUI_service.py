@@ -1,6 +1,7 @@
 import PySimpleGUI as sg
 from database_array import *
 from pos_service import *
+from employee_service import *
 
 
 passwordLayout = [
@@ -15,7 +16,7 @@ homepageLayout = [
 #homepage = sg.Window('Home', homepageLayout, size=(720,720))
 
 inventoryLayout = [
-    [sg.Push(), sg.Text("DATABASE"), sg.Push()],
+    [sg.Push(), sg.Text("DATABASE SERVICE"), sg.Push()],
     [sg.Table(values=dataList,headings=['PRODUCT NAME','RETAIL PRICE','IN INVENTORY','ITEM ID'],expand_x=True,expand_y=True,key='--database--')],
     [sg.Push(),sg.Text('PRODUCT ENTRY'),sg.Push()],
     [sg.Text(text="Product Name",size=27),sg.Text(text='Retail Price',size=27),sg.Text(text='In Inventory',size=27),sg.Text(text='Product ID',size=27)],
@@ -24,23 +25,32 @@ inventoryLayout = [
 ]
 #inventoryPage = sg.Window('Inventory',inventoryLayout, size=(720,720))
 
-posLayout = [
-    [sg.Push(), sg.Text("POINT OF SALES MODULE"), sg.Push()],
+posLayout = [ # piece of shit layout
+    [sg.Push(), sg.Text("POINT OF SALES SERVICE"), sg.Push()],
     [sg.Text(text='Item Name:',font=10,size=50),sg.Text(text='Amount Bought:',font=10,size=50)],
     [sg.Input(key='-checkoutName-',size=50),sg.Input(key='-checkoutAmnt-',size=50),sg.Button(button_text='Enter',key='-posCheck-',size=5)],
     [sg.Text(text='',key='-posName-',font=('Arial',20),size=27),sg.Text(text='',key='-posInv-',font=('Arial',20),size=27)],
     [sg.Text('CURRENT TRANSACTION',font=20)],
     [sg.Table(values=transactionList,headings=['PRODUCT NAME','AMOUNT','PRICE'],expand_x=True,key='--posTrans--')],
     [sg.Text(text='GST/HST:',font=20),sg.Text(text='',key='-hstText-',font=20),sg.Text(text='TOTAL:',font=20),sg.Text(text='',key='-totalTax-',font=20)],
-    [sg.Button(button_text='LOG TRANSACTION',key='-posLog-')]
+    [sg.Button(button_text='LOG TRANSACTION',key='-posLog-'),sg.Button(button_text='CLEAR',key='-posClear-')]
     ]
+
+employeeLayout = [
+    [sg.Push(),sg.Text("EMPLOYEE INFORMATION SERVICE"),sg.Push()],
+    []
+]
+
+financialLayout = []
 
 menu_def = []
 
 mainLayout = [[sg.Menu(menu_def)],
              [sg.TabGroup([[sg.Tab("Home", homepageLayout), 
                             sg.Tab("Inventory", inventoryLayout),
-                            sg.Tab("POS Module",posLayout)]],size=(720,720))]] #<-- fits to window
+                            sg.Tab("Point of Sales",posLayout),
+                            sg.Tab("Employee Info",employeeLayout),
+                            sg.Tab("Financial Info",financialLayout)]],size=(720,720))]] #<-- fits to window
 
 mainPage = sg.Window("Universal Business Solutions",mainLayout,size=(720,720))
 
