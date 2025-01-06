@@ -13,7 +13,7 @@ totalNoHST = 0 #<-- for POS function
 '''----------'''
 while passwordChallenge == False:
     values, event = passwordPage.read()
-    #print(values, event)
+    print(values, event)
     if event == {'-pw-': 'pass'}: # if key -pw- has value of 'pass'
         passwordPage.close() # closes window
         values = ''
@@ -28,6 +28,8 @@ while passwordChallenge == False:
 '''---------'''
 while passwordChallenge == True: #If password is true, start main program
     values, event = mainPage.read() #Launches the window
+    print(values,event)
+    
     if values == '-invAdd-':
         #newItem = Item(event['-prodName-'],event['-prodRP-'],event['-inInv-'],event['-prodID-']) # Turns gathered values into item class
         createItem = (event['-prodName-']+'Item') 
@@ -76,5 +78,8 @@ while passwordChallenge == True: #If password is true, start main program
         createPerson = Person(event['-empName-'],int(event['-empSal-']),int(event['-empPhon-']),event['-empAddr-']) 
         update_people()
         mainPage['--employeeList--'].Update(personList)
-
+    elif values == '-posTab-':
+        print("asdasdfeafsdvsed")
+    elif event[1] == '-posTab-':
+        print('asdasd')
     ## Open inventory window
