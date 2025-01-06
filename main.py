@@ -30,56 +30,63 @@ while passwordChallenge == True: #If password is true, start main program
     values, event = mainPage.read() #Launches the window
     print(values,event)
     
-    if values == '-invAdd-':
-        #newItem = Item(event['-prodName-'],event['-prodRP-'],event['-inInv-'],event['-prodID-']) # Turns gathered values into item class
-        createItem = (event['-prodName-']+'Item') 
-        createItem = Item(event['-prodName-'],int(event['-prodRP-']),int(event['-inInv-']),event['-prodID-']) # Turns gathered values into item class
-        update_database()
-        mainPage['--database--'].Update(dataList) # Updates the table with the item list
-        print(dataList)
-    elif values == '-posCheck-':
-        for items in range(len(Item.data)):
-            if event['-checkoutName-'] == Item.data[items].name or event['-checkoutName-'] == Item.data[items].item_id:  # If inputted name = name in Item.data
-                if int(event['-checkoutAmnt-']) <= Item.data[items].in_inventory and int(event['-checkoutAmnt-']) > 0:
-                    Item.data[items].in_inventory -= int(event['-checkoutAmnt-']) # Subtract Item.data from inputted value
-                    update_database() # Update dataList 
-                    mainPage['--database--'].Update(dataList) # Update the display table "automagically" 
-                    mainPage['-posName-'].Update("NAME OK!")
-                    mainPage['-posInv-'].Update("AMOUNT OK!")
-
-                    #'''POS TRANSACTION TABLE'''#
-                    transactionList.append([Item.data[items].name,event['-checkoutAmnt-'],int(Item.data[items].retail_price)*int(event['-checkoutAmnt-'])])
-                    mainPage['--posTrans--'].Update(transactionList)
-
-                    #'''PRICE VALUES'''#
-                    totalNoHST += int(Item.data[items].retail_price)*int(event['-checkoutAmnt-'])
-                    mainPage['-totalTax-'].Update(round(totalNoHST*1.13,2))
-                    mainPage['-hstText-'].Update(round(totalNoHST*0.13,2))
-                    break # TODO fix str input crashes 
-                else:
-                    mainPage['-posInv-'].Update("ERROR: BAD AMOUNT!")
-                    break
-            elif event['-checkoutName-'] != Item.data[items].name:
-                mainPage['-posName-'].Update("ERROR: BAD NAME!") # Name not OK
-    elif values == '-posLog-':
-        if totalNoHST == 0: # Only check 1 since they go hand-in-hand
-            continue
-        else:
-            transactionList.append([f"pre-tax:{totalNoHST} | w/tax:{round(totalNoHST*1.13,2)}"])
-            save_transaction()
-    elif values == '-posClear-':
-        transactionList.clear()
-        totalNoHST = 0
-        mainPage['--posTrans--'].Update(transactionList)
-        mainPage['-hstText-'].Update(totalNoHST)
-        mainPage['-totalTax-'].Update(totalNoHST)
-    elif values == '-empAdd-':
-        createPerson = (event['-empName-']+'Person') 
-        createPerson = Person(event['-empName-'],int(event['-empSal-']),int(event['-empPhon-']),event['-empAddr-']) 
-        update_people()
-        mainPage['--employeeList--'].Update(personList)
-    elif values == '-posTab-':
-        print("asdasdfeafsdvsed")
+    if event[1] == '-invTab-':
+        print('inv')
+        if values == '-invAdd-':
+            #newItem = Item(event['-prodName-'],event['-prodRP-'],event['-inInv-'],event['-prodID-']) # Turns gathered values into item class
+            createItem = (event['-prodName-']+'Item') 
+            createItem = Item(event['-prodName-'],int(event['-prodRP-']),int(event['-inInv-']),event['-prodID-']) # Turns gathered values into item class
+            update_database()
+            mainPage['--database--'].Update(dataList) # Updates the table with the item list
+            print(dataList)
     elif event[1] == '-posTab-':
-        print('asdasd')
+        print('pos')
+        if values == '-posCheck-':
+            for items in range(len(Item.data)):
+                if event['-checkoutName-'] == Item.data[items].name or event['-checkoutName-'] == Item.data[items].item_id:  # If inputted name = name in Item.data
+                    if int(event['-checkoutAmnt-']) <= Item.data[items].in_inventory and int(event['-checkoutAmnt-']) > 0:
+                        Item.data[items].in_inventory -= int(event['-checkoutAmnt-']) # Subtract Item.data from inputted value
+                        update_database() # Update dataList 
+                        mainPage['--database--'].Update(dataList) # Update the display table "automagically" 
+                        mainPage['-posName-'].Update("NAME OK!")
+                        mainPage['-posInv-'].Update("AMOUNT OK!")
+
+                        #'''POS TRANSACTION TABLE'''#
+                        transactionList.append([Item.data[items].name,event['-checkoutAmnt-'],int(Item.data[items].retail_price)*int(event['-checkoutAmnt-'])])
+                        mainPage['--posTrans--'].Update(transactionList)
+
+                        #'''PRICE VALUES'''#
+                        totalNoHST += int(Item.data[items].retail_price)*int(event['-checkoutAmnt-'])
+                        mainPage['-totalTax-'].Update(round(totalNoHST*1.13,2))
+                        mainPage['-hstText-'].Update(round(totalNoHST*0.13,2))
+                        break # TODO fix str input crashes 
+                    else:
+                        mainPage['-posInv-'].Update("ERROR: BAD AMOUNT!")
+                        break
+                elif event['-checkoutName-'] != Item.data[items].name:
+                    mainPage['-posName-'].Update("ERROR: BAD NAME!") # Name not OK
+        elif values == '-posLog-':
+            if totalNoHST == 0: # Only check 1 since they go hand-in-hand
+                continue
+            else:
+                transactionList.append([f"pre-tax:{totalNoHST} | w/tax:{round(totalNoHST*1.13,2)}"])
+                save_transaction()
+        elif values == '-posClear-':
+            transactionList.clear()
+            totalNoHST = 0
+            mainPage['--posTrans--'].Update(transactionList)
+            mainPage['-hstText-'].Update(totalNoHST)
+            mainPage['-totalTax-'].Update(totalNoHST)
+    elif event[1] == '-empTab-':
+        print('emp')
+        if values == '-empAdd-':
+            createPerson = (event['-empName-']+'Person') 
+            createPerson = Person(event['-empName-'],int(event['-empSal-']),int(event['-empPhon-']),event['-empAddr-']) 
+            update_people()
+            mainPage['--employeeList--'].Update(personList)
+    
+    
+    
+'''elif event[1] == '-posTab-':''' # <- Example shit (I'm losing it )
+       
     ## Open inventory window
