@@ -22,16 +22,16 @@ while passwordChallenge == False:
     elif event == sg.WIN_CLOSED or sg.Exit():
         passwordPage.close()
         break
-'''----------'''
 
+'''----------'''
 ## Homepage
 '''---------'''
 while passwordChallenge == True: #If password is true, start main program
     values, event = mainPage.read() #Launches the window
     if values == '-invAdd-':
         #newItem = Item(event['-prodName-'],event['-prodRP-'],event['-inInv-'],event['-prodID-']) # Turns gathered values into item class
-        x = (event['-prodName-']+'Item') 
-        x = Item(event['-prodName-'],int(event['-prodRP-']),int(event['-inInv-']),event['-prodID-']) # Turns gathered values into item class
+        createItem = (event['-prodName-']+'Item') 
+        createItem = Item(event['-prodName-'],int(event['-prodRP-']),int(event['-inInv-']),event['-prodID-']) # Turns gathered values into item class
         update_database()
         mainPage['--database--'].Update(dataList) # Updates the table with the item list
         print(dataList)
@@ -55,7 +55,6 @@ while passwordChallenge == True: #If password is true, start main program
                     mainPage['-hstText-'].Update(round(totalNoHST*0.13,2))
                     break # TODO fix str input crashes 
                 else:
-                    print("asd")
                     mainPage['-posInv-'].Update("ERROR: BAD AMOUNT!")
                     break
             elif event['-checkoutName-'] != Item.data[items].name:
@@ -66,14 +65,16 @@ while passwordChallenge == True: #If password is true, start main program
         else:
             transactionList.append([f"pre-tax:{totalNoHST} | w/tax:{round(totalNoHST*1.13,2)}"])
             save_transaction()
-
     elif values == '-posClear-':
         transactionList.clear()
         totalNoHST = 0
         mainPage['--posTrans--'].Update(transactionList)
         mainPage['-hstText-'].Update(totalNoHST)
         mainPage['-totalTax-'].Update(totalNoHST)
+    elif values == '-empAdd-':
+        createPerson = (event['-empName-']+'Person') 
+        createPerson = Person(event['-empName-'],int(event['-empSal-']),int(event['-empPhon-']),event['-empAddr-']) 
+        update_people()
+        mainPage['--employeeList--'].Update(personList)
 
-    
-    
     ## Open inventory window

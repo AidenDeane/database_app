@@ -38,7 +38,11 @@ posLayout = [ # piece of shit layout
 
 employeeLayout = [
     [sg.Push(),sg.Text("EMPLOYEE INFORMATION SERVICE"),sg.Push()],
-    []
+    [sg.Table(values=personList,headings=['FULL NAME','SALARY','PHONE NUMBER','ADDRESS'],expand_x=True,expand_y=True,key='--employeeList--')],
+    [sg.Text(text='Employee Name',size=27),sg.Text(text='Salary',size=27),sg.Text(text='Phone #',size=27), sg.Text(text='Address',size=27)],
+    [sg.Push(),sg.Text(text='EMPLOYEE ENTRY'),sg.Push()],
+    [sg.Input(key='-empName-',size=27),sg.Input(key='-empSal-',size=27),sg.Input(key='-empPhon-'),sg.Input(key='-empAddr-')],
+    [sg.Button(button_text='ENTER EMPLOYEE',key='-empAdd-')]
 ]
 
 financialLayout = []

@@ -22,16 +22,9 @@ class Item:
         self.item_id = str(item_id)
         Item.data.append(self)
 
-pencilItem = Item("pencil",20,40,'65000')
+pencilItem = Item("pencil",20,40,65000)
 testItem = Item("asd",1,2,3030)
 
 ## Gathers pre-programmed items into a list
-'''---------'''
 
-
-    
 update_database()
-
-'''for items in range(len(Item.data)):
-    if event['-checkoutName-']+'Item' == Item.data[items].name:
-        print('match')'''
