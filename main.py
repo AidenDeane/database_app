@@ -7,14 +7,15 @@ from employee_service import *
 passwordChallenge = True # <-- Change to false upon release
 totalNoHST = 0 #<-- for POS function
 
+genPass = 'pass'
+adminPass = 'admin'
 #TODO MAKE SHIT FLOAT!
-
 ## Password challenge
 '''----------'''
 while passwordChallenge == False:
     values, event = passwordPage.read()
     print(values, event)
-    if event == {'-pw-': 'pass'}: # if key -pw- has value of 'pass'
+    if event == {'-pw-': genPass}: # if key -pw- has value of 'pass'
         passwordPage.close() # closes window
         values = ''
         passwordChallenge = True # Opens other window
@@ -22,6 +23,8 @@ while passwordChallenge == False:
     elif event == sg.WIN_CLOSED or sg.Exit():
         passwordPage.close()
         break
+    else:
+        continue
 
 '''----------'''
 ## Homepage
@@ -30,7 +33,13 @@ while passwordChallenge == True: #If password is true, start main program
     values, event = mainPage.read() #Launches the window
     print(values,event)
     
-    if event[1] == '-invTab-':
+    if event[1] == '-homeTab-':
+        print('home')
+        if event['-adminPass-'] == adminPass:
+            mainPage['-empTab-'].Update(visible= True)
+            mainPage['-finTab-'].Update(visible= True)
+        
+    elif event[1] == '-invTab-':
         print('inv')
         if values == '-invAdd-':
             #newItem = Item(event['-prodName-'],event['-prodRP-'],event['-inInv-'],event['-prodID-']) # Turns gathered values into item class

@@ -3,6 +3,7 @@ from database_array import *
 from pos_service import *
 from employee_service import *
 
+adminState = False
 
 passwordLayout = [
     [sg.Text('Please enter your password!')],
@@ -11,7 +12,8 @@ passwordLayout = [
 passwordPage = sg.Window('Password',passwordLayout)
 
 homepageLayout = [ 
-    [sg.Push(), sg.Text("Welcome to the Universal Business Portal!",font=('Arial',20)), sg.Push()]
+    [sg.Push(), sg.Text("Welcome to the Universal Business Portal!",font=('Arial',20)), sg.Push()],
+    [sg.Text(text='ADMINISTRATOR ACCESS'),sg.Input(key='-adminPass-'),sg.Button(button_text='SUBMIT',key='-adminBut-')]
      ]
 #homepage = sg.Window('Home', homepageLayout, size=(720,720))
 
@@ -53,8 +55,8 @@ mainLayout = [[sg.Menu(menu_def)],
              [sg.TabGroup([[sg.Tab("Home", homepageLayout,key='-homeTab-'), 
                             sg.Tab("Inventory", inventoryLayout,key='-invTab-'),
                             sg.Tab("Point of Sales",posLayout,key='-posTab-'),
-                            sg.Tab("Employee Info",employeeLayout,key='-empTab-'),
-                            sg.Tab("Financial Info",financialLayout,key='-finTab-')]],size=(720,720),enable_events=True)]] #<-- fits to window
+                            sg.Tab("Employee Info",employeeLayout,key='-empTab-',visible=adminState),
+                            sg.Tab("Financial Info",financialLayout,key='-finTab-',visible=adminState)]],size=(720,720),enable_events=True)]] #<-- fits to window
 
 mainPage = sg.Window("Universal Business Solutions",mainLayout,size=(720,720))
 
