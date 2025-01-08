@@ -3,6 +3,7 @@ from GUI_service import *
 from database_array import *
 from pos_service import *
 from employee_service import *
+from financial_service import *
 
 passwordChallenge = True # <-- Change to false upon release
 totalNoHST = 0 #<-- for POS function
@@ -25,6 +26,8 @@ while passwordChallenge == False:
         break
     else:
         continue
+
+
 
 '''----------'''
 ## Homepage
@@ -68,6 +71,9 @@ while passwordChallenge == True: #If password is true, start main program
                         totalNoHST += int(Item.data[items].retail_price)*int(event['-checkoutAmnt-'])
                         mainPage['-totalTax-'].Update(round(totalNoHST*1.13,2))
                         mainPage['-hstText-'].Update(round(totalNoHST*0.13,2))
+                        #'''FINANCIAL UPDATE'''#
+                        financialList.insert(1[1],12)
+                        mainPage['--financialTable--'].Update(financialList)
                         break # TODO fix str input crashes 
                     else:
                         mainPage['-posInv-'].Update("ERROR: BAD AMOUNT!")
@@ -93,7 +99,13 @@ while passwordChallenge == True: #If password is true, start main program
             createPerson = Person(event['-empName-'],int(event['-empSal-']),int(event['-empPhon-']),event['-empAddr-']) 
             update_people()
             mainPage['--employeeList--'].Update(personList)
-    
+    elif event[1] == '-finTab-':
+        print('fin')
+        if values == '-finAdd-':
+            financialList.append([event['-qVal-'],float(event['-proVal-']),float(event['-expVal-']),(float(event['-proVal-'])-float(event['-expVal-']))])
+            mainPage['--financialTable--'].Update(financialList)
+    else:
+        print('qfewrgebgdf')
     
     
 '''elif event[1] == '-posTab-':''' # <- Example shit (I'm losing it )

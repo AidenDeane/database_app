@@ -2,8 +2,7 @@ import PySimpleGUI as sg
 from database_array import *
 from pos_service import *
 from employee_service import *
-
-adminState = False
+from financial_service import *
 
 passwordLayout = [
     [sg.Text('Please enter your password!')],
@@ -41,13 +40,19 @@ posLayout = [ # piece of shit layout
 employeeLayout = [
     [sg.Push(),sg.Text("EMPLOYEE INFORMATION SERVICE"),sg.Push()],
     [sg.Table(values=personList,headings=['FULL NAME','SALARY (MONTHLY)','PHONE NUMBER','ADDRESS'],expand_x=True,expand_y=True,key='--employeeList--')],
-    [sg.Text(text='Employee Name',size=27),sg.Text(text='Salary',size=27),sg.Text(text='Phone #',size=27), sg.Text(text='Address',size=27)],
     [sg.Push(),sg.Text(text='EMPLOYEE ENTRY'),sg.Push()],
-    [sg.Input(key='-empName-',size=27),sg.Input(key='-empSal-',size=27),sg.Input(key='-empPhon-'),sg.Input(key='-empAddr-')],
+    [sg.Text(text='Employee Name',size=27),sg.Text(text='Salary',size=27),sg.Text(text='Phone #',size=27), sg.Text(text='Address',size=27)],
+    [sg.Input(key='-empName-',size=27),sg.Input(key='-empSal-',size=27),sg.Input(key='-empPhon-',size=27),sg.Input(key='-empAddr-',size=27)],
     [sg.Button(button_text='ENTER EMPLOYEE',key='-empAdd-')]
 ]
 
-financialLayout = []
+financialLayout = [
+    [sg.Push(),sg.Text("FINANCIAL INFORMATION SERVICE"),sg.Push()],
+    [sg.Table(values=financialList,headings=['QUARTER','PROFIT','EXPENSES','NET-INCOME'],expand_x=True,expand_y=True,key='--financialTable--')],
+    [sg.Push(),sg.Text(text='FINANCIAL ENTRY'),sg.Push()],
+    [sg.Text(text='Quarter',size=27),sg.Text(text='Profits',size=27),sg.Text(text='Expenses',size=27)],
+    [sg.Input(key='-qVal-',size=27),sg.Input(key='-proVal-',size=27),sg.Input(key='-expVal-',size=27),sg.Button(button_text='ENTER VALUES',key='-finAdd-',size=27)]
+    ]
 
 menu_def = []
 
@@ -55,8 +60,9 @@ mainLayout = [[sg.Menu(menu_def)],
              [sg.TabGroup([[sg.Tab("Home", homepageLayout,key='-homeTab-'), 
                             sg.Tab("Inventory", inventoryLayout,key='-invTab-'),
                             sg.Tab("Point of Sales",posLayout,key='-posTab-'),
-                            sg.Tab("Employee Info",employeeLayout,key='-empTab-',visible=adminState),
-                            sg.Tab("Financial Info",financialLayout,key='-finTab-',visible=adminState)]],size=(720,720),enable_events=True)]] #<-- fits to window
+                            sg.Tab("Employee Info",employeeLayout,key='-empTab-',visible=True),
+                            sg.Tab("Financial Info",financialLayout,key='-finTab-',visible=True)]],
+                            size=(720,720),enable_events=True)]] #<-- fits to window
 
 mainPage = sg.Window("Universal Business Solutions",mainLayout,size=(720,720))
 
