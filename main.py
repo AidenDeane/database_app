@@ -7,10 +7,12 @@ from financial_service import *
 
 passwordChallenge = True # <-- Change to false upon release
 totalNoHST = 0 #<-- for POS function
+profits = 0
+expenditures = 0
 
 genPass = 'pass'
 adminPass = 'admin'
-#TODO MAKE SHIT FLOAT!
+#TODO MAKE 
 ## Password challenge
 '''----------'''
 while passwordChallenge == False:
@@ -34,16 +36,14 @@ while passwordChallenge == False:
 '''---------'''
 while passwordChallenge == True: #If password is true, start main program
     values, event = mainPage.read() #Launches the window
-    print(values,event)
+    #print(values,event)
     
     if event[1] == '-homeTab-':
-        print('home')
         if event['-adminPass-'] == adminPass:
             mainPage['-empTab-'].Update(visible= True)
             mainPage['-finTab-'].Update(visible= True)
         
     elif event[1] == '-invTab-':
-        print('inv')
         if values == '-invAdd-':
             #newItem = Item(event['-prodName-'],event['-prodRP-'],event['-inInv-'],event['-prodID-']) # Turns gathered values into item class
             createItem = (event['-prodName-']+'Item') 
@@ -52,7 +52,6 @@ while passwordChallenge == True: #If password is true, start main program
             mainPage['--database--'].Update(dataList) # Updates the table with the item list
             print(dataList)
     elif event[1] == '-posTab-':
-        print('pos')
         if values == '-posCheck-':
             for items in range(len(Item.data)):
                 if event['-checkoutName-'] == Item.data[items].name or event['-checkoutName-'] == Item.data[items].item_id:  # If inputted name = name in Item.data
@@ -72,8 +71,6 @@ while passwordChallenge == True: #If password is true, start main program
                         mainPage['-totalTax-'].Update(round(totalNoHST*1.13,2))
                         mainPage['-hstText-'].Update(round(totalNoHST*0.13,2))
                         #'''FINANCIAL UPDATE'''#
-                        financialList.insert(1[1],12)
-                        mainPage['--financialTable--'].Update(financialList)
                         break # TODO fix str input crashes 
                     else:
                         mainPage['-posInv-'].Update("ERROR: BAD AMOUNT!")
@@ -83,31 +80,54 @@ while passwordChallenge == True: #If password is true, start main program
         elif values == '-posLog-':
             if totalNoHST == 0: # Only check 1 since they go hand-in-hand
                 continue
-            else:
+            else: # Log transaction
                 transactionList.append([f"pre-tax:{totalNoHST} | w/tax:{round(totalNoHST*1.13,2)}"])
+                profits += totalNoHST
+                financialList.append(financial_update(profits,expenditures))
+                print(financialList)
+                mainPage['--financialTable--'].Update(financialList)
+                print(financialList)
                 save_transaction()
-        elif values == '-posClear-':
+                ## Clear transaction after logging
+                transactionList.clear()
+                totalNoHST = 0
+                mainPage['--posTrans--'].Update(transactionList)
+                mainPage['-hstText-'].Update(totalNoHST)
+                mainPage['-totalTax-'].Update(totalNoHST)
+        elif values == '-posClear-': 
+            # Clear point of sales from buttoin
             transactionList.clear()
             totalNoHST = 0
             mainPage['--posTrans--'].Update(transactionList)
             mainPage['-hstText-'].Update(totalNoHST)
             mainPage['-totalTax-'].Update(totalNoHST)
     elif event[1] == '-empTab-':
-        print('emp')
+        # Add employee
         if values == '-empAdd-':
             createPerson = (event['-empName-']+'Person') 
             createPerson = Person(event['-empName-'],int(event['-empSal-']),int(event['-empPhon-']),event['-empAddr-']) 
             update_people()
             mainPage['--employeeList--'].Update(personList)
     elif event[1] == '-finTab-':
-        print('fin')
         if values == '-finAdd-':
-            financialList.append([event['-qVal-'],float(event['-proVal-']),float(event['-expVal-']),(float(event['-proVal-'])-float(event['-expVal-']))])
+            print(len(financialList),financialList)
+            financialList.append([str(event['-qVal-']),float(event['-proVal-']),float(event['-expVal-']),(float(event['-proVal-'])-float(event['-expVal-']))])
             mainPage['--financialTable--'].Update(financialList)
+            for transactions in range(len(financialList)-1): # If name is in list
+                print(transactions,'blah')
+                if event['-qVal-'] in financialList[transactions]:
+                    print('is')
+                    # Replace expend and profit
+                    financialList[transactions][1] += float(event['-proVal-'])
+                    financialList[transactions][2] += float(event['-expVal-'])
+                    financialList[transactions][3] += float(event['-proVal-']) - float(event['-expVal-'])
+                    # Remove dupe 
+                    financialList.pop()
+                    mainPage['--financialTable--'].Update(financialList)
+                    break
+                else: # create new 
+                    print("not")
+                    
     else:
         print('qfewrgebgdf')
     
-    
-'''elif event[1] == '-posTab-':''' # <- Example shit (I'm losing it )
-       
-    ## Open inventory window
