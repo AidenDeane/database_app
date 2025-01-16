@@ -39,15 +39,16 @@ while passwordChallenge == True: #If password is true, start main program
     #print(values,event)
     
     if event[1] == '-homeTab-':
+        # Checks for admin auth
         if event['-adminPass-'] == adminPass:
             mainPage['-empTab-'].Update(visible= True)
             mainPage['-finTab-'].Update(visible= True)
         
     elif event[1] == '-invTab-':
         if values == '-invAdd-':
-            #newItem = Item(event['-prodName-'],event['-prodRP-'],event['-inInv-'],event['-prodID-']) # Turns gathered values into item class
+            # Turns gathered values into item class
             createItem = (event['-prodName-']+'Item') 
-            createItem = Item(event['-prodName-'],int(event['-prodRP-']),int(event['-inInv-']),event['-prodID-']) # Turns gathered values into item class
+            createItem = Item(event['-prodName-'],float(event['-prodRP-']),int(event['-inInv-']),event['-prodID-']) # Turns gathered values into item class
             update_database()
             mainPage['--database--'].Update(dataList) # Updates the table with the item list
             print(dataList)
@@ -63,11 +64,11 @@ while passwordChallenge == True: #If password is true, start main program
                         mainPage['-posInv-'].Update("AMOUNT OK!")
 
                         #'''POS TRANSACTION TABLE'''#
-                        transactionList.append([Item.data[items].name,event['-checkoutAmnt-'],int(Item.data[items].retail_price)*int(event['-checkoutAmnt-'])])
+                        transactionList.append([Item.data[items].name,event['-checkoutAmnt-'],float(Item.data[items].retail_price)*int(event['-checkoutAmnt-'])])
                         mainPage['--posTrans--'].Update(transactionList)
 
                         #'''PRICE VALUES'''#
-                        totalNoHST += int(Item.data[items].retail_price)*int(event['-checkoutAmnt-'])
+                        totalNoHST += float(Item.data[items].retail_price)*int(event['-checkoutAmnt-'])
                         mainPage['-totalTax-'].Update(round(totalNoHST*1.13,2))
                         mainPage['-hstText-'].Update(round(totalNoHST*0.13,2))
                         #'''FINANCIAL UPDATE'''#
@@ -127,6 +128,9 @@ while passwordChallenge == True: #If password is true, start main program
                     break
                 else: # create new 
                     print("not")
+    elif event == sg.WIN_CLOSED or sg.Exit():
+        passwordPage.close()
+        break
                     
     else:
         print('qfewrgebgdf')

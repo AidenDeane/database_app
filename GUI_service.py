@@ -26,7 +26,7 @@ inventoryLayout = [
 ]
 #inventoryPage = sg.Window('Inventory',inventoryLayout, size=(720,720))
 
-posLayout = [ # piece of shit layout
+posLayout = [ 
     [sg.Push(), sg.Text("POINT OF SALES SERVICE"), sg.Push()],
     [sg.Text(text='Item Name:',font=10,size=50),sg.Text(text='Amount Bought:',font=10,size=50)],
     [sg.Input(key='-checkoutName-',size=50),sg.Input(key='-checkoutAmnt-',size=50),sg.Button(button_text='Enter',key='-posCheck-',size=5)],
