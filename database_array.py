@@ -5,7 +5,7 @@ from config.database_log import *
 def load_data():
     for items in range(len(dsVar)):
         print(dsVar[items][0],dsVar[items][1],dsVar[items][2],dsVar[items][3])
-        loadItem = Item(dsVar[items][0],dsVar[items][1],dsVar[items][2],dsVar[items][3])
+        Item(dsVar[items][0],dsVar[items][1],dsVar[items][2],dsVar[items][3])
 
 dataList = []
 def update_database():

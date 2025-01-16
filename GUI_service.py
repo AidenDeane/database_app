@@ -50,7 +50,7 @@ financialLayout = [
     [sg.Push(),sg.Text("FINANCIAL INFORMATION SERVICE"),sg.Push()],
     [sg.Table(values=financialList,headings=['QUARTER','PROFIT','EXPENSES','NET-INCOME'],expand_x=True,expand_y=True,key='--financialTable--')],
     [sg.Push(),sg.Text(text='FINANCIAL ENTRY'),sg.Push()],
-    [sg.Text(text='Quarter',size=27),sg.Text(text='Profits',size=27),sg.Text(text='Expenses',size=27)],
+    [sg.Text(text='Day',size=27),sg.Text(text='Profits',size=27),sg.Text(text='Expenses',size=27)],
     [sg.Input(key='-qVal-',size=27),sg.Input(key='-proVal-',size=27),sg.Input(key='-expVal-',size=27),sg.Button(button_text='ENTER VALUES',key='-finAdd-',size=27)]
     ]
 

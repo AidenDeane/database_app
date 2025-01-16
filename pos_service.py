@@ -1,4 +1,3 @@
-import PySimpleGUI as sg
 import datetime
 import os 
 
