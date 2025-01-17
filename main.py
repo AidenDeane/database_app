@@ -11,7 +11,7 @@ profits = 0
 expenditures = 0
 
 genPass = 'pass'
-adminPass = 'admin'
+adminPass = 'admin' 
 #TODO MAKE 
 ## Password challenge
 '''----------'''
@@ -48,10 +48,13 @@ while passwordChallenge == True: #If password is true, start main program
         if values == '-invAdd-':
             # Turns gathered values into item class
             createItem = (event['-prodName-']+'Item') 
-            createItem = Item(event['-prodName-'],float(event['-prodRP-']),int(event['-inInv-']),event['-prodID-']) # Turns gathered values into item class
+            if isinstance(((event['-prodRP-']) or (event['-inInv-']) or event['-prodID-']), str):
+                print('asd')
+            else:
+                createItem = Item(event['-prodName-'],float(event['-prodRP-']),int(event['-inInv-']),event['-prodID-']) # Turns gathered values into item class
             update_database()
             mainPage['--database--'].Update(dataList) # Updates the table with the item list
-            print(dataList)
+            print(dataList) 
     elif event[1] == '-posTab-':
         if values == '-posCheck-':
             for items in range(len(Item.data)):
@@ -129,9 +132,7 @@ while passwordChallenge == True: #If password is true, start main program
                 else: # create new 
                     print("not")
     elif event == sg.WIN_CLOSED or sg.Exit():
-        passwordPage.close()
+        mainPage.close()
         break
-                    
     else:
-        print('qfewrgebgdf')
-    
+        continue
