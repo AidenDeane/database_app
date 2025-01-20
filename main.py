@@ -4,6 +4,7 @@ from database_array import *
 from pos_service import *
 from employee_service import *
 from financial_service import *
+from config.database_log import *
 
 passwordChallenge = True # <-- Change to false upon release
 totalNoHST = 0 #<-- for POS function
@@ -48,13 +49,25 @@ while passwordChallenge == True: #If password is true, start main program
         if values == '-invAdd-':
             # Turns gathered values into item class
             createItem = (event['-prodName-']+'Item') 
-            if isinstance(((event['-prodRP-']) or (event['-inInv-']) or event['-prodID-']), str):
-                print('asd')
-            else:
-                createItem = Item(event['-prodName-'],float(event['-prodRP-']),int(event['-inInv-']),event['-prodID-']) # Turns gathered values into item class
+            createItem = Item(event['-prodName-'],float(event['-prodRP-']),int(event['-inInv-']),event['-prodID-']) # Turns gathered values into item class
             update_database()
             mainPage['--database--'].Update(dataList) # Updates the table with the item list
-            print(dataList) 
+            for items in range(len(dataList)-1): # If name is in dataList, replace stuff and delete itself
+                if event['-prodName-'] in dataList[items]:
+                    # Replace expend and profit
+                    dataList[items][1] = float(event['-prodRP-'])
+                    dataList[items][2] = str(event['-inInv-'])
+                    # Remove dupe 
+                    dataList.pop() # Remove from table
+                    Item.data.pop() # Remove the actual object from the class list
+                    del createItem # Removes class instance
+                    mainPage['--database--'].Update(dataList) 
+                    print(dataList)
+                    print('isin')
+                    break
+                else: # continue on as normal and don't do anything
+                    print('notin')
+                    continue
     elif event[1] == '-posTab-':
         if values == '-posCheck-':
             for items in range(len(Item.data)):
@@ -134,5 +147,7 @@ while passwordChallenge == True: #If password is true, start main program
     elif event == sg.WIN_CLOSED or sg.Exit():
         mainPage.close()
         break
+                    
     else:
-        continue
+        print('qfewrgebgdf')
+    

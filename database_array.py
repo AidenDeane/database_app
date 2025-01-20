@@ -7,6 +7,15 @@ def load_data():
         print(dsVar[items][0],dsVar[items][1],dsVar[items][2],dsVar[items][3])
         Item(dsVar[items][0],dsVar[items][1],dsVar[items][2],dsVar[items][3])
 
+
+    filepath = os.path.join(f"{os.getcwd()}/config/database_log.py")
+    classLog = open(filepath,'a')
+    classLog.truncate(0) # Clear to rebuild list
+    classLog.write(f'dsVar = {dataList}') 
+    classLog.close()
+
+
+
 dataList = []
 def update_database():
     dataList.clear() # Must clear data as it reconstructs the list from scratch
@@ -16,13 +25,17 @@ def update_database():
         dataList[items].append(Item.data[items].retail_price) 
         dataList[items].append(Item.data[items].in_inventory) 
         dataList[items].append(Item.data[items].item_id)
+
     #            ^^^^^                   ^^^^^
     #   Output list index       input list index
+    
         filepath = os.path.join(f"{os.getcwd()}/config/database_log.py")
         classLog = open(filepath,'a')
         classLog.truncate(0) # Clear to rebuild list
         classLog.write(f'dsVar = {dataList}') 
         classLog.close()
+
+
 
 class Item:
     data = []
@@ -32,7 +45,6 @@ class Item:
         self.in_inventory = in_inventory
         self.item_id = str(item_id)
         Item.data.append(self)
-
 
 
 load_data()
