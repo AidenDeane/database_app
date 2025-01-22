@@ -1,3 +1,10 @@
+# Name: Aiden Deane
+# Title: Universal Business Portal - main.py
+# Date: Final Commit 22 Jan 2025
+# Description: Imports all relevant files and runs them.
+# Improper use of inputs will crash the program, and I could not find enough time to make the financial log PERMANENT
+
+
 import PySimpleGUI as sg
 from GUI_service import *
 from database_array import *
@@ -6,7 +13,6 @@ from employee_service import *
 from financial_service import *
 from config.database_log import *
 from config.employee_log import *
-from importlib import reload
 
 passwordChallenge = False # <-- Change to false upon release
 totalNoHST = 0 #<-- for POS function
@@ -22,16 +28,13 @@ while passwordChallenge == False:
     values, event = passwordPage.read()
     if event == {'-pw-': genPass}: # if key -pw- has value of 'pass'
         passwordPage.close() # closes window
-        values = ''
         passwordChallenge = True # Opens other window
         break
-    elif event != {'-pw-': genPass}:
-        continue
-    elif event == sg.WIN_CLOSED or sg.Exit():
-        passwordPage.close()
+    elif event == sg.WIN_CLOSED or sg.Exit(): # If user tries to close the window
+        passwordPage.close() # Actually close it this time (This is to prevent an error popup)
         break
     else:
-        continue
+        continue # So it doesn't crash if something else miraculously happpens
 
 
 

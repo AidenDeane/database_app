@@ -1,3 +1,9 @@
+# Name: Aiden Deane
+# Title: Universal Business Portal - gui_service.py
+# Date: Final Commit 22 Jan 2025
+# Description: Utilizes PySimpleGui for GUI stuff. This logs events under event variable in a dictionary.
+
+
 import PySimpleGUI as sg
 from database_array import *
 from pos_service import *
@@ -14,7 +20,6 @@ homepageLayout = [
     [sg.Push(), sg.Text("Welcome to the Universal Business Portal!",font=('Arial',20)), sg.Push()],
     [sg.Text(text='ADMINISTRATOR ACCESS'),sg.Input(key='-adminPass-'),sg.Button(button_text='SUBMIT',key='-adminBut-')]
      ]
-#homepage = sg.Window('Home', homepageLayout, size=(720,720))
 
 inventoryLayout = [
     [sg.Push(), sg.Text("DATABASE SERVICE"), sg.Push()],
@@ -24,7 +29,6 @@ inventoryLayout = [
     [sg.Input(key='-prodName-',size=27),sg.Input(key='-prodRP-',size=27),sg.Input(key='-inInv-',size=27),sg.Input(key='-prodID-',size=27)],
     [sg.Button("Add Item",key='-invAdd-')]
 ]
-#inventoryPage = sg.Window('Inventory',inventoryLayout, size=(720,720))
 
 posLayout = [ 
     [sg.Push(), sg.Text("POINT OF SALES SERVICE"), sg.Push()],
@@ -54,7 +58,7 @@ financialLayout = [
     [sg.Input(key='-qVal-',size=27),sg.Input(key='-proVal-',size=27),sg.Input(key='-expVal-',size=27),sg.Button(button_text='ENTER VALUES',key='-finAdd-',size=27)]
     ]
 
-menu_def = []
+menu_def = [] # Gets rid of the default menu.
 
 mainLayout = [[sg.Menu(menu_def)],
              [sg.TabGroup([[sg.Tab("Home", homepageLayout,key='-homeTab-'), 
@@ -62,7 +66,9 @@ mainLayout = [[sg.Menu(menu_def)],
                             sg.Tab("Point of Sales",posLayout,key='-posTab-'),
                             sg.Tab("Employee Info",employeeLayout,key='-empTab-',visible=False),
                             sg.Tab("Financial Info",financialLayout,key='-finTab-',visible=False)]],
-                            size=(720,720),enable_events=True)]] #<-- fits to window
+                            size=(720,720),enable_events=True)]] #<- events so I don't have to check irrelevant tabs
+                        #   ^^^^^
+                        #   Tab fits to window
 
 mainPage = sg.Window("Universal Business Solutions",mainLayout,size=(720,720))
 
