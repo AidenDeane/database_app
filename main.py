@@ -5,8 +5,10 @@ from pos_service import *
 from employee_service import *
 from financial_service import *
 from config.database_log import *
+from config.employee_log import *
+from importlib import reload
 
-passwordChallenge = True # <-- Change to false upon release
+passwordChallenge = False # <-- Change to false upon release
 totalNoHST = 0 #<-- for POS function
 profits = 0
 expenditures = 0
@@ -18,12 +20,13 @@ adminPass = 'admin'
 '''----------'''
 while passwordChallenge == False:
     values, event = passwordPage.read()
-    print(values, event)
     if event == {'-pw-': genPass}: # if key -pw- has value of 'pass'
         passwordPage.close() # closes window
         values = ''
         passwordChallenge = True # Opens other window
         break
+    elif event != {'-pw-': genPass}:
+        continue
     elif event == sg.WIN_CLOSED or sg.Exit():
         passwordPage.close()
         break
@@ -48,26 +51,30 @@ while passwordChallenge == True: #If password is true, start main program
     elif event[1] == '-invTab-':
         if values == '-invAdd-':
             # Turns gathered values into item class
-            createItem = (event['-prodName-']+'Item') 
-            createItem = Item(event['-prodName-'],float(event['-prodRP-']),int(event['-inInv-']),event['-prodID-']) # Turns gathered values into item class
-            update_database()
-            mainPage['--database--'].Update(dataList) # Updates the table with the item list
-            for items in range(len(dataList)-1): # If name is in dataList, replace stuff and delete itself
-                if event['-prodName-'] in dataList[items]:
-                    # Replace expend and profit
-                    dataList[items][1] = float(event['-prodRP-'])
-                    dataList[items][2] = str(event['-inInv-'])
-                    # Remove dupe 
-                    dataList.pop() # Remove from table
-                    Item.data.pop() # Remove the actual object from the class list
-                    del createItem # Removes class instance
-                    mainPage['--database--'].Update(dataList) 
-                    print(dataList)
-                    print('isin')
+
+            ## Reload the dsvar list 
+            filepath = os.path.join(f"{os.getcwd()}/config/database_log.py")
+            file = open(filepath, mode = 'r', encoding = 'utf-8-sig')
+            dsVar = eval(file.readline().split("=")[1].strip())
+            ## Solution from Mr. Stewart for reloading file values at runtime
+
+            for items in range(len(dsVar)): # For items in the stored data
+                print(items,len(dsVar)-1,items == len(dsVar))
+                if event['-prodName-'] in dsVar[items]: # If event name is already written to dsVar
+                    print('yes')
+                    Item.data[items].retail_price = float(event['-prodRP-']) # v
+                    Item.data[items].in_inventory = int(event['-inInv-'])    # Replace values
                     break
-                else: # continue on as normal and don't do anything
-                    print('notin')
-                    continue
+                elif items == len(dsVar)-1 and event['-prodName-'] not in dsVar[items]:
+                    print('max', dsVar[items])
+                    createItem = (event['-prodName-']+'Item') 
+                    createItem = Item(event['-prodName-'],float(event['-prodRP-']),int(event['-inInv-']),event['-prodID-']) # Turns gathered values into item class
+                    break
+                else: # If not stored
+                    continue # Continue until maximum reached
+            update_database() # adds values into dataList
+            mainPage['--database--'].Update(dataList) # Updates the table with the item list
+
     elif event[1] == '-posTab-':
         if values == '-posCheck-':
             for items in range(len(Item.data)):
@@ -101,9 +108,7 @@ while passwordChallenge == True: #If password is true, start main program
                 transactionList.append([f"pre-tax:{totalNoHST} | w/tax:{round(totalNoHST*1.13,2)}"])
                 profits += totalNoHST
                 financialList.append(financial_update(profits,expenditures))
-                print(financialList)
                 mainPage['--financialTable--'].Update(financialList)
-                print(financialList)
                 save_transaction()
                 ## Clear transaction after logging
                 transactionList.clear()
@@ -121,19 +126,30 @@ while passwordChallenge == True: #If password is true, start main program
     elif event[1] == '-empTab-':
         # Add employee
         if values == '-empAdd-':
-            createPerson = (event['-empName-']+'Person') 
-            createPerson = Person(event['-empName-'],int(event['-empSal-']),int(event['-empPhon-']),event['-empAddr-']) 
+
+            filepath = os.path.join(f"{os.getcwd()}/config/employee_log.py")
+            file = open(filepath, mode = 'r', encoding = 'utf-8-sig')
+            empList = eval(file.readline().split("=")[1].strip())
+            for people in range(len(Person.data)): # For items in the stored data
+                if event['-empName-'] in empList[people]: # If event name is already written to dsVar
+                    Person.data[people].salary = float(event['-empSal-'])
+                    Person.data[people].phoneNo = int(event['-empPhon-']) # Replace values
+                    Person.data[people].address = event['-empAddr-']
+                    break
+                elif people == len(empList)-1 and event['-empName-'] not in dsVar[people]:
+                    createPerson = (event['-empName-']+'Person') 
+                    createPerson = Person(event['-empName-'],float(event['-empSal-']),int(event['-empPhon-']),event['-empAddr-']) # Turns gathered values into item class
+                    break
+                else: # If not stored
+                    continue
             update_people()
             mainPage['--employeeList--'].Update(personList)
     elif event[1] == '-finTab-':
         if values == '-finAdd-':
-            print(len(financialList),financialList)
             financialList.append([str(event['-qVal-']),float(event['-proVal-']),float(event['-expVal-']),(float(event['-proVal-'])-float(event['-expVal-']))])
             mainPage['--financialTable--'].Update(financialList)
             for transactions in range(len(financialList)-1): # If name is in list
-                print(transactions,'blah')
                 if event['-qVal-'] in financialList[transactions]:
-                    print('is')
                     # Replace expend and profit
                     financialList[transactions][1] += float(event['-proVal-'])
                     financialList[transactions][2] += float(event['-expVal-'])
@@ -143,11 +159,11 @@ while passwordChallenge == True: #If password is true, start main program
                     mainPage['--financialTable--'].Update(financialList)
                     break
                 else: # create new 
-                    print("not")
+                    continue
     elif event == sg.WIN_CLOSED or sg.Exit():
         mainPage.close()
         break
                     
     else:
-        print('qfewrgebgdf')
+        continue
     

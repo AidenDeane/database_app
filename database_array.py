@@ -16,6 +16,7 @@ def load_data():
 
 
 
+
 dataList = []
 def update_database():
     dataList.clear() # Must clear data as it reconstructs the list from scratch

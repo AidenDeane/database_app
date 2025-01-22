@@ -48,7 +48,7 @@ employeeLayout = [
 
 financialLayout = [
     [sg.Push(),sg.Text("FINANCIAL INFORMATION SERVICE"),sg.Push()],
-    [sg.Table(values=financialList,headings=['QUARTER','PROFIT','EXPENSES','NET-INCOME'],expand_x=True,expand_y=True,key='--financialTable--')],
+    [sg.Table(values=financialList,headings=['MONTH','PROFIT','EXPENSES','NET-INCOME'],expand_x=True,expand_y=True,key='--financialTable--')],
     [sg.Push(),sg.Text(text='FINANCIAL ENTRY'),sg.Push()],
     [sg.Text(text='Day',size=27),sg.Text(text='Profits',size=27),sg.Text(text='Expenses',size=27)],
     [sg.Input(key='-qVal-',size=27),sg.Input(key='-proVal-',size=27),sg.Input(key='-expVal-',size=27),sg.Button(button_text='ENTER VALUES',key='-finAdd-',size=27)]
@@ -60,8 +60,8 @@ mainLayout = [[sg.Menu(menu_def)],
              [sg.TabGroup([[sg.Tab("Home", homepageLayout,key='-homeTab-'), 
                             sg.Tab("Inventory", inventoryLayout,key='-invTab-'),
                             sg.Tab("Point of Sales",posLayout,key='-posTab-'),
-                            sg.Tab("Employee Info",employeeLayout,key='-empTab-',visible=True),
-                            sg.Tab("Financial Info",financialLayout,key='-finTab-',visible=True)]],
+                            sg.Tab("Employee Info",employeeLayout,key='-empTab-',visible=False),
+                            sg.Tab("Financial Info",financialLayout,key='-finTab-',visible=False)]],
                             size=(720,720),enable_events=True)]] #<-- fits to window
 
 mainPage = sg.Window("Universal Business Solutions",mainLayout,size=(720,720))
