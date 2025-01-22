@@ -2,7 +2,8 @@
 # Title: Universal Business Portal - main.py
 # Date: Final Commit 22 Jan 2025
 # Description: Imports all relevant files and runs them.
-# Improper use of inputs will crash the program, and I could not find enough time to make the financial log PERMANENT
+# I could not find enough time to make the financial log PERMANENT
+# Inputting strings in inappropriate places will result in a crash. I noticed too late to impliment a solution.
 
 
 import PySimpleGUI as sg
@@ -30,6 +31,8 @@ while passwordChallenge == False:
         passwordPage.close() # closes window
         passwordChallenge = True # Opens other window
         break
+    elif event != {'-pw-': genPass}: # This seems redundant, but it the program will close if the password is wrong w/o this
+        continue
     elif event == sg.WIN_CLOSED or sg.Exit(): # If user tries to close the window
         passwordPage.close() # Actually close it this time (This is to prevent an error popup)
         break
@@ -42,18 +45,17 @@ while passwordChallenge == False:
 ## Homepage
 '''---------'''
 while passwordChallenge == True: #If password is true, start main program
-    values, event = mainPage.read() #Launches the window
+    values, event = mainPage.read() #Launches the window and logs values and events
     #print(values,event)
     
-    if event[1] == '-homeTab-':
+    if event[1] == '-homeTab-': # If user is on home tab
         # Checks for admin auth
         if event['-adminPass-'] == adminPass:
             mainPage['-empTab-'].Update(visible= True)
             mainPage['-finTab-'].Update(visible= True)
         
-    elif event[1] == '-invTab-':
+    elif event[1] == '-invTab-': # If user is on inventory tab... and so on
         if values == '-invAdd-':
-            # Turns gathered values into item class
 
             ## Reload the dsvar list 
             filepath = os.path.join(f"{os.getcwd()}/config/database_log.py")
@@ -65,21 +67,20 @@ while passwordChallenge == True: #If password is true, start main program
                 print(items,len(dsVar)-1,items == len(dsVar))
                 if event['-prodName-'] in dsVar[items]: # If event name is already written to dsVar
                     print('yes')
-                    Item.data[items].retail_price = float(event['-prodRP-']) # v
+                    Item.data[items].retail_price = float(event['-prodRP-']) # Replaces values 
                     Item.data[items].in_inventory = int(event['-inInv-'])    # Replace values
                     break
-                elif items == len(dsVar)-1 and event['-prodName-'] not in dsVar[items]:
-                    print('max', dsVar[items])
-                    createItem = (event['-prodName-']+'Item') 
+                elif items == len(dsVar)-1 and event['-prodName-'] not in dsVar[items]: # If at end of the list and it hasn't been found
+                    createItem = (event['-prodName-']+'Item') # Create a new item!
                     createItem = Item(event['-prodName-'],float(event['-prodRP-']),int(event['-inInv-']),event['-prodID-']) # Turns gathered values into item class
                     break
-                else: # If not stored
+                else: # If not found YET
                     continue # Continue until maximum reached
             update_database() # adds values into dataList
             mainPage['--database--'].Update(dataList) # Updates the table with the item list
 
     elif event[1] == '-posTab-':
-        if values == '-posCheck-':
+        if values == '-posCheck-': # Just assume these to be button actions
             for items in range(len(Item.data)):
                 if event['-checkoutName-'] == Item.data[items].name or event['-checkoutName-'] == Item.data[items].item_id:  # If inputted name = name in Item.data
                     if int(event['-checkoutAmnt-']) <= Item.data[items].in_inventory and int(event['-checkoutAmnt-']) > 0:
@@ -98,7 +99,7 @@ while passwordChallenge == True: #If password is true, start main program
                         mainPage['-totalTax-'].Update(round(totalNoHST*1.13,2))
                         mainPage['-hstText-'].Update(round(totalNoHST*0.13,2))
                         #'''FINANCIAL UPDATE'''#
-                        break # TODO fix str input crashes 
+                        break 
                     else:
                         mainPage['-posInv-'].Update("ERROR: BAD AMOUNT!")
                         break
@@ -113,12 +114,14 @@ while passwordChallenge == True: #If password is true, start main program
                 financialList.append(financial_update(profits,expenditures))
                 mainPage['--financialTable--'].Update(financialList)
                 save_transaction()
+
                 ## Clear transaction after logging
                 transactionList.clear()
                 totalNoHST = 0
                 mainPage['--posTrans--'].Update(transactionList)
                 mainPage['-hstText-'].Update(totalNoHST)
                 mainPage['-totalTax-'].Update(totalNoHST)
+
         elif values == '-posClear-': 
             # Clear point of sales from buttoin
             transactionList.clear()
@@ -129,10 +132,11 @@ while passwordChallenge == True: #If password is true, start main program
     elif event[1] == '-empTab-':
         # Add employee
         if values == '-empAdd-':
-
+            # Read data from employee log
             filepath = os.path.join(f"{os.getcwd()}/config/employee_log.py")
             file = open(filepath, mode = 'r', encoding = 'utf-8-sig')
             empList = eval(file.readline().split("=")[1].strip())
+
             for people in range(len(Person.data)): # For items in the stored data
                 if event['-empName-'] in empList[people]: # If event name is already written to dsVar
                     Person.data[people].salary = float(event['-empSal-'])
@@ -147,7 +151,7 @@ while passwordChallenge == True: #If password is true, start main program
                     continue
             update_people()
             mainPage['--employeeList--'].Update(personList)
-    elif event[1] == '-finTab-':
+    elif event[1] == '-finTab-': # This section was neglected...
         if values == '-finAdd-':
             financialList.append([str(event['-qVal-']),float(event['-proVal-']),float(event['-expVal-']),(float(event['-proVal-'])-float(event['-expVal-']))])
             mainPage['--financialTable--'].Update(financialList)
@@ -158,15 +162,16 @@ while passwordChallenge == True: #If password is true, start main program
                     financialList[transactions][2] += float(event['-expVal-'])
                     financialList[transactions][3] += float(event['-proVal-']) - float(event['-expVal-'])
                     # Remove dupe 
-                    financialList.pop()
+                    financialList.pop() # Yes, I know this is unoptimized.
                     mainPage['--financialTable--'].Update(financialList)
                     break
-                else: # create new 
+                else: 
                     continue
-    elif event == sg.WIN_CLOSED or sg.Exit():
+    elif event == sg.WIN_CLOSED or sg.Exit(): # Again, here as a preventative measure to prevent crashes upon closing
         mainPage.close()
         break
                     
     else:
-        continue
+        continue # This is here as a safeguard unless something ever happens
+                 # (Nothing ever happens)
     
