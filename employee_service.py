@@ -1,9 +1,16 @@
+# Name: Aiden Deane
+# Title: Universal Business Portal - employee_service
+# Date: Final Commit 22 Jan 2025
+# Description: Writes and saves data to employee_log.py, and acts as a staging area for all people classes.
+
+
+# This layout is almost exactly the same as database_array.py All relevant annotations are there!
+
 import os
 from config.employee_log import *
 
 def load_data():
     for people in range(len(empList)):
-        print(empList[people][0],empList[people][1],empList[people][2],empList[people][3])
         Person(empList[people][0],empList[people][1],empList[people][2],empList[people][3])
 
 personList = []
@@ -32,7 +39,6 @@ class Person:
         self.address = address
         Person.data.append(self)
 
-#JohnPerson = Person('John',3123,4013803,'21 Jump St.')
 
 load_data()
 
